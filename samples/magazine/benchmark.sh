@@ -60,7 +60,7 @@ if [ "$1" ]; then
   RUNS=RUNS$1
   shift
 else
-  RUNS=RUNS1
+  RUNS=RUNS2
 fi
 
 ${CAT} /dev/null >"${OUT_BLAZE}"

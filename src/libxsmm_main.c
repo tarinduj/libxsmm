@@ -2107,7 +2107,7 @@ LIBXSMM_API_INTERN int libxsmm_build(const libxsmm_build_request* request, unsig
   }
   /* setup code generation */
   printf("\033[34m Checkpoint -7: libxsmm_main target archid: %d \033[0m\n", libxsmm_target_archid);
-  libxsmm_target_archid = 1101;
+  libxsmm_target_archid = 1002;
   generated_code.arch = libxsmm_target_archid;
   printf("\033[34m Checkpoint -8: libxsmm_main generated code arch: %d \033[0m\n", generated_code.arch); 
   generated_code.code_type = 2;
