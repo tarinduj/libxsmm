@@ -436,6 +436,7 @@ LIBXSMM_API const char* libxsmm_cpuid_name(int id)
     }
   }
   LIBXSMM_ASSERT(NULL != target_arch);
+  printf("\033[34m Checkpoint -6: libxsmm_cpuid_x86 target arch: %s \033[0m\n", target_arch); 
   return target_arch;
 }
 

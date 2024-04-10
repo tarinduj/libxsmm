@@ -2252,6 +2252,7 @@ LIBXSMM_API_INTERN int libxsmm_malloc_xattrib(void* buffer, int flags, size_t si
 
 LIBXSMM_API_INTERN int libxsmm_malloc_attrib(void** memory, int flags, const char* name, const size_t* data_size)
 {
+  printf("\033[34m Checkpoint -3: libxsmm_malloc_attrib def in malloc \033[0m\n");
   internal_malloc_info_type *const info = (NULL != memory ? internal_malloc_info(*memory, 0/*no check*/) : NULL);
   int result = EXIT_SUCCESS;
   static int error_once = 0;
@@ -2277,6 +2278,7 @@ LIBXSMM_API_INTERN int libxsmm_malloc_attrib(void** memory, int flags, const cha
         LIBXSMM_ASSERT(0 != (LIBXSMM_MALLOC_FLAG_X & flags));
         if (NULL != name && '\0' != *name) { /* profiler support requested */
           if (0 > libxsmm_verbosity) { /* avoid dump if just the profiler is enabled */
+            printf("\033[34m Checkpoint -2: libxsmm_dump call from malloc \033[0m\n");
             LIBXSMM_EXPECT(EXIT_SUCCESS == libxsmm_dump("LIBXSMM-JIT-DUMP", name, code_ptr,
               /* dump executable code without constant data (apply_size vs info_size) */
               apply_size, 1/*unique*/, 0/*overwrite*/));

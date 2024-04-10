@@ -1032,6 +1032,7 @@ LIBXSMM_API_INTERN void internal_init(void)
     const void *const dlmpi = (NULL == dlerror() ? dlsymbol : NULL);
 #endif
     const char *const env_verbose = getenv("LIBXSMM_VERBOSE");
+    printf("\033[34m Checkpoint 1: set env_verbose \033[0m\n");
     void* new_registry = NULL, * new_keys = NULL;
 #if defined(LIBXSMM_CACHE_MAXSIZE) && (0 < (LIBXSMM_CACHE_MAXSIZE))
 # if defined(LIBXSMM_NTHREADS_USE)
@@ -1049,6 +1050,7 @@ LIBXSMM_API_INTERN void internal_init(void)
     /* setup verbosity as early as possible since below code may rely on verbose output */
     if (NULL != env_verbose) {
       libxsmm_verbosity = ('\0' != *env_verbose ? atoi(env_verbose) : 1);
+      printf("\033[34m Checkpoint 2: set libxsmm_verbosity: %d \033[0m\n", libxsmm_verbosity);
     }
 #if defined(_DEBUG)
     else {
@@ -1750,6 +1752,7 @@ LIBXSMM_API void libxsmm_set_target_arch(const char* arch)
       && 1 == LIBXSMM_ATOMIC_ADD_FETCH(&error_once, 1, LIBXSMM_ATOMIC_RELAXED))
     {
       const char *const target_arch = libxsmm_cpuid_name(target_archid);
+      
       fprintf(stderr, "LIBXSMM WARNING: \"%s\" code will fail to run on \"%s\"!\n",
         target_arch, libxsmm_cpuid_name(cpuid));
     }
@@ -2032,6 +2035,7 @@ LIBXSMM_API_INLINE void internal_get_typesize_string(char buffer[4], int buffer_
 
 LIBXSMM_API_INTERN int libxsmm_dump(const char* title, const char* name, const void* data, size_t size, int unique, int overwrite)
 {
+  printf("\033[34m Checkpoint -1: libxsmm_dump def in main \033[0m\n");
   int result;
   if (NULL != name && '\0' != *name && NULL != data && 0 != size) {
     FILE* data_file = ((0 != unique || 0 == overwrite) ? fopen(name, "rb") : NULL);
@@ -2102,7 +2106,10 @@ LIBXSMM_API_INTERN int libxsmm_build(const libxsmm_build_request* request, unsig
     generated_code.buffer_size = LIBXSMM_MALLOC_LIMIT;
   }
   /* setup code generation */
+  printf("\033[34m Checkpoint -7: libxsmm_main target archid: %d \033[0m\n", libxsmm_target_archid);
+  libxsmm_target_archid = 1101;
   generated_code.arch = libxsmm_target_archid;
+  printf("\033[34m Checkpoint -8: libxsmm_main generated code arch: %d \033[0m\n", generated_code.arch); 
   generated_code.code_type = 2;
 
 # if !defined(NDEBUG) /* should not be needed (all members will be initialized below) */
@@ -2546,6 +2553,7 @@ LIBXSMM_API_INTERN int libxsmm_build(const libxsmm_build_request* request, unsig
 # endif
     /* no error raised */)
   {
+    printf("\033[34m Checkpoint -5: jitname created in main : %s \033[0m\n", jit_name);
     char* code_buffer = NULL;
     void* code_buffer_ptr = &code_buffer;
     const size_t code_size = (size_t)generated_code.code_size;
@@ -2561,6 +2569,7 @@ LIBXSMM_API_INTERN int libxsmm_build(const libxsmm_build_request* request, unsig
       /* copy temporary buffer into the prepared executable buffer */
       memcpy(code_buffer, generated_code.generated_code, total_size);
       /* attribute and protect code-buffer by setting only necessary flags */
+      printf("\033[34m Checkpoint -4: libxsmm_malloc_attrib call from main \033[0m\n");
       result = libxsmm_malloc_attrib((void**)code_buffer_ptr,
         LIBXSMM_MALLOC_FLAG_X, jit_name, &data_size);
       if (EXIT_SUCCESS == result && 0 != data_size) { /* check for success */
